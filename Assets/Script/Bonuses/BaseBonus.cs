@@ -1,19 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public abstract class BaseBonus
 {
-    public delegate void OnBonusChanged(BaseBonus bonus);
+    public delegate void BonusChanged(BaseBonus bonus);
 
-    public event OnBonusChanged OnAddBonus;
-    public event OnBonusChanged OnRemoveBonus;
-    public event OnBonusChanged OnExpireBonus;
+    public event BonusChanged OnAddBonus;
+    public event BonusChanged OnRemoveBonus;
+    public event BonusChanged OnExpireBonus;
 
-    [SerializeField]
-    private bool hasDuration;
-    [SerializeField]
-    private float duration;
+    public bool HasDuration { get; protected set; }
+    public float Duration { get; protected set; }
 
     public virtual BaseState ApplyBonus(BaseState targetState) 
     {
@@ -24,10 +18,10 @@ public abstract class BaseBonus
 
     public virtual BaseState Update(BaseState targetState, float deltaTime)
     {
-        if (!hasDuration) return targetState;
-        
-        duration -= deltaTime;
-        if (duration > 0)
+        if (!HasDuration) return targetState;
+
+        Duration -= deltaTime;
+        if (Duration <= 0)
         {
             OnExpireBonus?.Invoke(this);
         }
@@ -40,5 +34,11 @@ public abstract class BaseBonus
     {
         OnRemoveBonus?.Invoke(this);
         return targetState;
+    }
+
+    protected void SetDuration(float duration)
+    {
+        Duration = duration;
+        HasDuration = true;
     }
 }

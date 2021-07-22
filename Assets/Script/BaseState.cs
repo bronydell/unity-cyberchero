@@ -17,13 +17,12 @@ public class BaseState
 
     }
 
-    public static BaseState operator +(BaseState stateA, BaseState stateB)
-    {
-        return new BaseState(stateA.Speed + stateB.Speed);
-    }
 
-    public static BaseState operator -(BaseState stateA, BaseState stateB)
+    public virtual BaseState Mutate(float? speed = null)
     {
-        return new BaseState(stateA.Speed - stateB.Speed);
+        return new BaseState(
+            speed ?? Speed
+        );
     }
+        
 }
