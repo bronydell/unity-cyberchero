@@ -1,6 +1,7 @@
 ﻿public class PlayerState : BaseState
 {
-    public PlayerState(float speed) : base(speed)
+    public PlayerState(float speed, float health, float maxHealth) 
+        : base(speed, health, maxHealth)
     {
     }
 
@@ -8,10 +9,15 @@
     {
     }
 
-    public override BaseState Mutate(float? speed = null)
+    public override BaseState Mutate(
+        float? speed = null,
+        float? health = null,
+        float? maxHealth = null)
     {
         return new PlayerState(
-            speed ?? Speed
+            speed ?? Speed,
+            health ?? Health,
+            maxHealth ?? MaxHealth
         );
     }
 }

@@ -6,7 +6,20 @@ public class StatsSystem : MonoBehaviour
     protected List<BaseBonus> BonusList;
     protected List<BaseBonus> BonusesToRemoveList;
 
-    public BaseState State { get; set; }
+    public delegate void StateChanged(BaseState oldState, BaseState newState);
+
+    public event StateChanged OnStateChanged;
+
+    private BaseState state;
+
+    public BaseState State {
+        get => state;
+        set
+        {
+            OnStateChanged?.Invoke(State, value);
+            state = value; 
+        }
+    }
 
     protected void Awake()
     {

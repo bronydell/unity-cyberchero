@@ -6,8 +6,14 @@ public abstract class BaseBonus
     public event BonusChanged OnRemoveBonus;
     public event BonusChanged OnExpireBonus;
 
+    public string Source { get; protected set; }
     public bool HasDuration { get; protected set; }
     public float Duration { get; protected set; }
+
+    protected BaseBonus(string source)
+    {
+        Source = source;
+    }
 
     public virtual BaseState ApplyBonus(BaseState targetState) 
     {

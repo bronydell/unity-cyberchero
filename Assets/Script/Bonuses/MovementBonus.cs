@@ -3,11 +3,11 @@ public class MovementBonus : BaseBonus
 {
     protected float speedModifier;
 
-    public MovementBonus(float speedModifier)
+    public MovementBonus(float speedModifier, string source = "Unknown") : base(source)
     {
         this.speedModifier = speedModifier;
     }
-    public MovementBonus(float duration, float speedModifier) : this(speedModifier)
+    public MovementBonus(float duration, float speedModifier, string source = "Unknown") : this(speedModifier, source)
     {
         this.SetDuration(duration);
     }
