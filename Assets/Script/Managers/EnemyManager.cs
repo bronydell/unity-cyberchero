@@ -49,7 +49,7 @@ public class EnemyManager : MonoBehaviour
         enemyList.Add(controller);
     }
 
-    private void OnEnemyDie(CharacterController controller)
+    private void OnEnemyDie(BaseCharacterController controller)
     {
         if (controller is EnemyController enemyController)
         {

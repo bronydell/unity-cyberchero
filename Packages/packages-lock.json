@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.fluid.behavior-tree": {
+      "version": "https://github.com/ashblue/fluid-behavior-tree.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "94ee7297bdea66111016dcdd7d31847400986a61"
+    },
     "com.unity.collab-proxy": {
       "version": "1.3.9",
       "depth": 0,

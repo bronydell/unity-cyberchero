@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(StatsSystem))]
-public class CharacterController : MonoBehaviour
+public class BaseCharacterController : MonoBehaviour
 {
     [SerializeField]
     protected CharacterStarterInfo starterInfo;
 
     protected StatsSystem stats;
 
+    protected GameManager gameManager;
 
-    public delegate void DieEvent(CharacterController controller);
+
+    public delegate void DieEvent(BaseCharacterController controller);
 
     public event DieEvent OnDie;
 
@@ -17,7 +19,12 @@ public class CharacterController : MonoBehaviour
     {
         stats = GetComponent<StatsSystem>();
         stats.OnStateChanged += OnStateUpdate;
-        stats.State = new PlayerState(starterInfo);
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
+    protected virtual void Start()
+    {
+        stats.State = InitializeState();
     }
 
     protected virtual void OnStateUpdate(BaseState oldState, BaseState newState)

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerUI))]
-public class PlayerController : CharacterController
+public class PlayerController : BaseCharacterController
 {
     [SerializeField]
     private GameObject weaponPrefab;
@@ -10,9 +10,7 @@ public class PlayerController : CharacterController
     private Transform weaponSocket;
     [SerializeField]
     private float enemySearchCooldown;
-
-    private GameManager gameManager;
-    private Rigidbody rb;
+    
     private BaseWeapon weapon;
     private PlayerUI playerUI;
 
@@ -31,12 +29,12 @@ public class PlayerController : CharacterController
         var weaponObj = Instantiate(weaponPrefab, weaponSocket);
         weapon = weaponObj.GetComponent<BaseWeapon>();
         playerUI = GetComponent<PlayerUI>();
-        rb = GetComponent<Rigidbody>();
         stats.OnStateChanged += playerUI.OnStateUpdate;
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         // Trigger the weapon, because we can't be sure if this callback will be called at start
         StopMovementCallback();
         StartCoroutine(CheckForTargets());
@@ -47,8 +45,16 @@ public class PlayerController : CharacterController
         // TODO: Make sure we do not rotate on anything besides X axis
         if (targetEnemy != null)
         {
-            var qTo = Quaternion.LookRotation(targetEnemy.transform.position - transform.position);
-            rb.MoveRotation(qTo);
+            Transform selfTransform = weapon.transform;
+            Transform targetTransform = targetEnemy.transform;
+            Quaternion oldRotation = transform.rotation;
+            var qTo = Quaternion.LookRotation(targetTransform.position - selfTransform.position);
+            Debug.Log($"Old rotation {oldRotation.eulerAngles} and new {qTo.eulerAngles}?");
+            transform.rotation = qTo;
+        }
+        else
+        {
+            Debug.Log("Can't find the enemy?");
         }
     }
 
